@@ -34,13 +34,33 @@ namespace InventoryCodeAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryCodeAPI", Version = "v1" });
             });
             services.AddDbContext<UsersDBContext>(options =>
-                       options.UseSqlServer(Configuration.GetConnectionString("DevConnection"))
+                       options.UseSqlServer(Configuration.GetConnectionString("DevAzureConnection"))
+            );
+            services.AddDbContext<ProductDBContext>(options =>
+                       options.UseSqlServer(Configuration.GetConnectionString("DevAzureConnection"))
+            );
+            services.AddDbContext<OrderDBContext>(options =>
+                       options.UseSqlServer(Configuration.GetConnectionString("DevAzureConnection"))
+            );
+            services.AddDbContext<OrderDetailsDBContext>(options =>
+                       options.UseSqlServer(Configuration.GetConnectionString("DevAzureConnection"))
+            );
+            services.AddDbContext<cartDBContext>(options =>
+                       options.UseSqlServer(Configuration.GetConnectionString("DevAzureConnection"))
+            );
+            services.AddDbContext<CustomContext>(options =>
+                       options.UseSqlServer(Configuration.GetConnectionString("DevAzureConnection"))
             );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options =>
+                    options.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            );
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
